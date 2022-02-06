@@ -39,8 +39,13 @@ app.get("/", (req, res) => {
     res.json({message: "Server is running"});
 });
 
+// routes
+require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
+
+
 // set port, listen for requests
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT} http://localhost:${PORT}`);
 });
