@@ -28,6 +28,10 @@ exports.totpVerify = (req, res) => {
         _id: req.body.id
     })
         .exec((err, user) => {
+            if (err) {
+                res.status(500).send({message: err});
+                return;
+            }
             console.log(user)
             res.send({
                 "valid": Speakeasy.totp.verify({
