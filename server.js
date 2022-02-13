@@ -18,7 +18,7 @@ app.use(express.urlencoded({extended: true}));
 
 let db = require("./models");
 let Role = db.role;
-let test = ""
+
 db.mongoose
     .connect(process.env.MONGODB_URL || `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
         useNewUrlParser: true,
@@ -43,10 +43,10 @@ require("./routes/auth.routes")(app);
 require("./routes/user.routes")(app);
 require("./routes/totp.routes")(app)
 
+let port = process.env.PORT || 3000
 
-
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
 
 function initial() {
