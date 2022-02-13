@@ -29,8 +29,12 @@ exports.totpVerify = (req, res) => {
     })
         .exec((err, user) => {
             if (err) {
-                res.status(500).send({message: err});
-                return;
+                return res.status(500)
+                    .send({
+                        code: 500,
+                        error: {"error": "Server Error"},
+                        message: "Server Error"
+                    });
             }
             console.log(user)
             res.send({

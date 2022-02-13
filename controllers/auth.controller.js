@@ -70,20 +70,20 @@ exports.login = (req, res) => {
         .populate("roles", "-__v")
         .exec((err, user) => {
             if (err) {
-                res.status(500)
+                return res.status(500)
                     .send({
                         code: 500,
-                        errors: err
+                        error: {"error": "Server Error"},
+                        message: "Server Error"
                     });
-                return;
             }
 
             if (!user) {
                 return res.status(404)
                     .send({
                         code: 404,
-                        errors: {"error": ["User Not found."]},
-                        message: "User Not found."
+                        error: {"error": "User Not found"},
+                        message: "User Not found"
                     });
             }
 
@@ -93,9 +93,11 @@ exports.login = (req, res) => {
             );
 
             if (!passwordIsValid) {
-                return res.status(401).send({
-                    accessToken: null,
-                    message: "Invalid Password!"
+                return res.status(401)
+                    .send({
+                        code: 401,
+                        error: {"error": "Invalid Password!"},
+                        message: "Invalid Password!"
                 });
             }
 
@@ -110,8 +112,12 @@ exports.login = (req, res) => {
             user.secret = secret
             user.save(err => {
                 if (err) {
-                    res.status(500).send({message: err});
-                    return;
+                    return res.status(500)
+                        .send({
+                            code: 500,
+                            error: {"error": "Server Error"},
+                            message: "Server Error"
+                        });
                 }
 
                 // res.send({message: "User was registered successfully!"});
@@ -129,7 +135,8 @@ exports.login = (req, res) => {
                     roles: authorities,
                     accessToken: token,
                     secret: secret
-                }
+                },
+                message: "OK"
             });
         });
 };
