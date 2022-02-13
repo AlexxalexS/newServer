@@ -3,12 +3,12 @@ const cors = require("cors");
 const dbConfig = require("./config/db.config");
 require('dotenv').config();
 const app = express();
-
-let corsOptions = {
-    origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
+//
+// let corsOptions = {
+//     origin: "http://localhost:8081"
+// };
+//
+// app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(express.json());
