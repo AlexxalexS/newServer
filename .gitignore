@@ -1,6 +1,7 @@
 # Project exclude paths
 node_modules
 package-lock.json
+.env
 
 auth.config.js
 db.config.js

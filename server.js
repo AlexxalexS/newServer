@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dbConfig = require("./config/db.config");
-
+require('dotenv').config();
 const app = express();
 
 let corsOptions = {
@@ -18,13 +18,12 @@ app.use(express.urlencoded({extended: true}));
 
 let db = require("./models");
 let Role = db.role;
-
+let test = ""
 db.mongoose
-    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        }
-    )
+    .connect(process.env.MONGODB_URL || `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
     .then(() => {
         console.log("Successfully connect to MongoDB.");
         initial();
@@ -45,10 +44,9 @@ require("./routes/user.routes")(app);
 require("./routes/totp.routes")(app)
 
 
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT} http://localhost:${PORT}`);
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
 
 function initial() {
