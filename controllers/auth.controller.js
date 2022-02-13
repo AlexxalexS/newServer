@@ -70,7 +70,11 @@ exports.login = (req, res) => {
         .populate("roles", "-__v")
         .exec((err, user) => {
             if (err) {
-                res.status(500).send({message: err});
+                res.status(500)
+                    .send({
+                        code: 500,
+                        errors: err
+                    });
                 return;
             }
 
