@@ -82,7 +82,7 @@ exports.login = (req, res) => {
                 return res.status(404)
                     .send({
                         code: 404,
-                        errors: err,
+                        errors: [err],
                         message: "User Not found."
                     });
             }
