@@ -63,7 +63,7 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+exports.login = (req, res) => {
     User.findOne({
         username: req.body.username
     })
@@ -98,16 +98,29 @@ exports.signin = (req, res) => {
 
             const secret = Speakeasy.generateSecret({length: 40}).base32;
 
+            user.secret = secret
+            user.save(err => {
+                if (err) {
+                    res.status(500).send({message: err});
+                    return;
+                }
+
+                // res.send({message: "User was registered successfully!"});
+            });
+
             for (let i = 0; i < user.roles.length; i++) {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
             }
             res.status(200).send({
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                roles: authorities,
-                accessToken: token,
-                secret: secret
+                code: 200,
+                data: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    roles: authorities,
+                    accessToken: token,
+                    secret: secret
+                }
             });
         });
 };
