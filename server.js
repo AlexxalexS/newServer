@@ -18,9 +18,9 @@ app.use(express.urlencoded({extended: true}));
 
 let db = require("./models");
 let Role = db.role;
-
+//|| `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`
 db.mongoose
-    .connect(process.env.MONGODB_URL || `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+    .connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
