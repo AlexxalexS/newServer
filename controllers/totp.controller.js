@@ -46,7 +46,6 @@ exports.totpVerify = (req, res) => {
                 })
             });
         });
-
 };
 
 

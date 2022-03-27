@@ -1,14 +1,7 @@
 const express = require("express");
-// const cors = require("cors");
-// const dbConfig = require("./config/db.config");
+
 require('dotenv').config();
 const app = express();
-//
-// let corsOptions = {
-//     origin: "http://localhost:8081"
-// };
-//
-// app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -18,7 +11,6 @@ app.use(express.urlencoded({extended: true}));
 
 let db = require("./models");
 let Role = db.role;
-//|| `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`
 db.mongoose
     .connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
@@ -33,7 +25,7 @@ db.mongoose
         process.exit();
     });
 
-// simple route
+// main route
 app.get("/", (req, res) => {
     res.json({message: "Server is running"});
 });
@@ -49,6 +41,7 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
+// check is empty roles. If it hasn't roles, create roles
 function initial() {
     Role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {

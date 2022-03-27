@@ -3,7 +3,4 @@ node_modules
 package-lock.json
 .env
 
-db.config.js
-
-
 /.idea/vcs.xml
