@@ -101,13 +101,10 @@ exports.login = (req, res) => {
                 });
             }
 
-            let token = jwt.sign({id: user.id}, config.secret, {
-                // expiresIn: 86400 // 24 hours
-            });
-
             let authorities = [];
 
-            const secret = Speakeasy.generateSecret({length: 40}).base32;
+            let token = jwt.sign({id: user.id}, config.secret);
+            let secret = Speakeasy.generateSecret({length: 40}).base32;
 
             user.secret = secret
             user.save(err => {
@@ -126,6 +123,7 @@ exports.login = (req, res) => {
             for (let i = 0; i < user.roles.length; i++) {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
             }
+
             res.status(200).send({
                 code: 200,
                 data: {
