@@ -17,6 +17,14 @@ exports.totpVerify = (req, res) => {
                     });
             }
             console.log(user)
+            if (!user) {
+                return res.status(400)
+                    .send({
+                        code: 400,
+                        error: {"error": "User id Not found"},
+                        message: "User Id Not found"
+                    });
+            }
             let isValid = Speakeasy.totp.verify({
                 secret: user.secret,
                 encoding: "base32",

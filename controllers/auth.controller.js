@@ -8,10 +8,15 @@ const bcrypt = require("bcryptjs");
 const Speakeasy = require("speakeasy");
 
 exports.signup = (req, res) => {
+    if (req.body.username === undefined || req.body.email === undefined || req.body.password === undefined) {
+        res.status(422).send({message: "Заполните все обязательные поля"});
+        return;
+    }
+
     const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        username: req.body.username.toString(),
+        email: req.body.email.toString(),
+        password: bcrypt.hashSync(req.body.password.toString(), 8)
     });
 
     user.save((err, user) => {
@@ -64,8 +69,16 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
+    if (req.body.username === undefined || req.body.password === undefined) {
+        res.status(422).send({message: "Заполните все обязательные поля"});
+        return;
+    }
+
     User.findOne({
-        username: req.body.username
+        $or: [
+            { username: req.body.username },
+            { email: req.body.username }
+        ]
     })
         .populate("roles", "-__v")
         .exec((err, user) => {
@@ -83,12 +96,12 @@ exports.login = (req, res) => {
                     .send({
                         code: 404,
                         error: {"error": "User Not found"},
-                        message: "User Not found"
+                        message: "Пользователь не найден"
                     });
             }
 
             let passwordIsValid = bcrypt.compareSync(
-                req.body.password,
+                req.body.password.toString(),
                 user.password
             );
 
@@ -97,7 +110,7 @@ exports.login = (req, res) => {
                     .send({
                         code: 401,
                         error: {"error": "Invalid Password!"},
-                        message: "Invalid Password!"
+                        message: "Не верный пароль!"
                 });
             }
 
