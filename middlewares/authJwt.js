@@ -16,6 +16,7 @@ verifyToken = (req, res, next) => {
   if (!token) {
     return res.status(403).send({
       code: 403,
+      error: {"error": "No token provided!"},
       message: "No token provided!"
     });
   }
@@ -24,6 +25,7 @@ verifyToken = (req, res, next) => {
     if (err) {
       return res.status(401).send({
         code: 401,
+        error: {"error": err.toString()},
         message: "Unauthorized!"
       });
     }
@@ -35,8 +37,11 @@ verifyToken = (req, res, next) => {
 isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+      return res.status(500).send({
+        code: 500,
+        error: { "error": err.toString()},
+        message: err
+      });
     }
 
     Role.find(
@@ -45,8 +50,11 @@ isAdmin = (req, res, next) => {
       },
       (err, roles) => {
         if (err) {
-          res.status(500).send({ message: err });
-          return;
+          return res.status(500).send({
+            code: 500,
+            error: { "error": err.toString()},
+            message: err
+          });
         }
 
         for (let i = 0; i < roles.length; i++) {

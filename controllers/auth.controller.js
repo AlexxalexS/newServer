@@ -43,12 +43,13 @@ exports.signup = (req, res) => {
                             return;
                         }
 
-                        res.send({
-                            code: 201,
-                            data: {
-                                message: "Регистарция прошла успешно!"
-                            }
-                        });
+                        res.status(201)
+                            .send({
+                                code: 201,
+                                data: {
+                                    message: "Регистарция прошла успешно!"
+                                }
+                            });
                     });
                 }
             );
@@ -66,7 +67,7 @@ exports.signup = (req, res) => {
                         return;
                     }
 
-                    res.send({
+                    res.status(201).send({
                         code: 201,
                         data: {
                             message: "Регистарция прошла успешно!"
