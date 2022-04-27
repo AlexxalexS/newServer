@@ -43,7 +43,12 @@ exports.signup = (req, res) => {
                             return;
                         }
 
-                        res.send({message: "User was registered successfully!"});
+                        res.send({
+                            code: 201,
+                            data: {
+                                message: "Регистарция прошла успешно!"
+                            }
+                        });
                     });
                 }
             );
@@ -61,7 +66,12 @@ exports.signup = (req, res) => {
                         return;
                     }
 
-                    res.send({message: "User was registered successfully!"});
+                    res.send({
+                        code: 201,
+                        data: {
+                            message: "Регистарция прошла успешно!"
+                        }
+                    });
                 });
             });
         }
